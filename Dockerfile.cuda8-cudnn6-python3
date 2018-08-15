@@ -1,0 +1,21 @@
+FROM nvidia/cuda:8.0-cudnn6-runtime-ubuntu16.04
+
+LABEL maintainer "Sy Ha"
+
+# Instal basic utilities
+RUN apt-get update && \
+        apt-get -y dist-upgrade && \
+        apt-get install -y --no-install-recommends \ 
+        curl git wget ffmpeg unzip bzip2 build-essential fonts-dejavu gfortran gcc 
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python3 python3-pip python3-setuptools python3-tk
+
+RUN apt-get clean && \
+        apt-get autoremove -y && \
+        rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --upgrade pip
+RUN echo "alias python='/usr/bin/python3'" >> ~/.bashrc
+
+# Set default working directory and image startup command
+CMD ["/bin/bash"]
